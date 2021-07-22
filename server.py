@@ -5,15 +5,17 @@ update_id = None
 from_ = None
 message = None
 
-def reply(msg, from_ = from_):
+def reply(msg):
+    global from_
     bot.send_message(msg, from_)
 
-def decide_mode(msg, from_):
+def decide_mode(msg):
     global update_id
+    global from_
     if msg.lower() == "/start":
-        registration(msg, from_)
+        registration()
     else:
-        reply("Sorry I don't understand you", from_)
+        reply("Sorry I don't understand you")
 
 def valid_response_checker(user_input, options):
     if user_input.lower() == "/quit" or user_input.lower() == "quit":
@@ -44,28 +46,29 @@ def get_response(options):
             from_ = item["message"]["from"]["id"]
             response = valid_response_checker(message,options)
             if(response == "invalid"):
-                reply("Invalid Response, please try again", from_)
+                reply("Invalid Response, please try again")
             elif(response == "quit"):
-                reply("Quitting from here...", from_)
+                reply("Quitting from here...")
                 exit()
             else:
                 responded = True
                 return response
 
 
-def registration(msg, from_):
+def registration():
     global update_id
-    reply("HELLO! This is me MELL, your diabetes buddy!", from_)
-    reply("To get started we will set up your profile!", from_)
-    reply("Are you signing up as a patient or a caregiver?", from_)
-    reply("Reply with your option's number.\n1. Patient\n2. Caregiver", from_)
+    global from_
+    reply("HELLO! This is me MELL, your diabetes buddy!")
+    reply("To get started we will set up your profile!")
+    reply("Are you signing up as a patient or a caregiver?")
+    reply("Reply with your option's number.\n1. Patient\n2. Caregiver")
     user_input = get_response(["1","2"])
-    reply("Would you like to add your caregiver and/or your registered medical team?", from_)
-    reply("Reply with your option's number.\n1. Caregiver\n2. Medical Team\n3. Both Caregiver and Medical", from_)
+    reply("Would you like to add your caregiver and/or your registered medical team?")
+    reply("Reply with your option's number.\n1. Caregiver\n2. Medical Team\n3. Both Caregiver and Medical")
     user_input = get_response(["1","2","3"])
-    reply("Please enter your caregiver's number:", from_)
+    reply("Please enter your caregiver's number:")
     user_input = get_response([])
-    reply("Are you convidose or smart pillbox user. You can scan your convoid-dose qr code to automatically register your medications or you can manually enter your medication!", from_)
+    reply("Are you convidose or smart pillbox user. You can scan your convoid-dose qr code to automatically register your medications or you can manually enter your medication!")
 
 
 while True:
@@ -81,7 +84,7 @@ while True:
         except:
             message = None
         from_ = item["message"]["from"]["id"]
-        decide_mode(message, from_)
+        decide_mode(message)
 
 
 
