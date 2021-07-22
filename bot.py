@@ -1,6 +1,7 @@
 import requests
 import json
 import configparser as cfg
+from telegram import ParseMode
 
 class telegram_chatbot():
         def __init__(self):
@@ -16,7 +17,8 @@ class telegram_chatbot():
             return json.loads(r.content)
 
         def send_message(self, msg, chat_id):
-            url = self.base + "sendMessage?chat_id={}&text={}".format(chat_id, msg)
+            url = self.base + "sendMessage?chat_id={}&text={}&parse_mode={}".format(chat_id, msg,ParseMode.MARKDOWN)
+            print(url)
             if msg is not None:
                 requests.get(url)
 
